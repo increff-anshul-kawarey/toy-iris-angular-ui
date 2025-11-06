@@ -1,0 +1,195 @@
+<div class="page-container">
+  <!-- Upload Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <span class="icon">{{ getIconName('cloud_upload') }}</span>
+          Data Upload
+        </h1>
+      </div>
+      <div class="header-actions">
+        <div class="last-refresh">
+          <span>Last updated: {{ lastRefreshTime | date:'short' }}</span>
+        </div>
+        <button 
+          class="btn btn--secondary"
+          (click)="fetchDataStatus()"
+          [disabled]="isLoading">
+          Refresh
+        </button>
+        <button 
+          class="btn btn--danger"
+          (click)="clearAllData()">
+          Clear All Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Content -->
+  <div class="upload-content page-content">
+    @if (isLoading) {
+      <div class="loading">
+        <div class="loading__spinner"></div>
+        <div class="loading__text">Loading upload status...</div>
+      </div>
+    } @else {
+      <!-- Upload Cards Grid -->
+      <div class="upload-grid">
+        @for (file of uploadFiles; track file.id) {
+          <div class="card" [ngClass]="getCardClass(file)">
+            <!-- Card Header -->
+            <div class="card-header" [ngClass]="getStatusClass(file)">
+              <div class="status-indicator">
+                <span class="icon">{{ getIconName(getStatusIcon(file)) }}</span>
+                <span class="status-text">{{ getStatusText(file) }}</span>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="file-info">
+                <h3 class="file-title">{{ file.displayName }}</h3>
+                <p class="file-description">{{ file.description }}</p>
+              </div>
+
+              <!-- Status Content -->
+              <div class="status-content">
+                @if (file.status === 'processing') {
+                  <div class="processing-info">
+                    <div class="progress-section">
+                      <div class="progress-bar">
+                        <div class="progress-fill" [style.width.%]="file.progress || 0"></div>
+                      </div>
+                      <span class="progress-text">{{ file.progress || 0 }}%</span>
+                    </div>
+                    <p class="progress-message">{{ file.progressMessage || 'Processing your file...' }}</p>
+                  </div>
+                } @else if (file.status === 'success') {
+                  <div class="success-info">
+                    <div class="record-count">{{ file.count?.toLocaleString() || 0 }} records available</div>
+                    <p class="success-message">Your file is ready for use</p>
+                  </div>
+                } @else if (file.status === 'error') {
+                  <div class="error-info">
+                    <p class="error-message">{{ file.errorMessage || 'Upload failed due to error' }}</p>
+                    <p class="error-subtitle">Please check your file and try again</p>
+                  </div>
+                } @else if (file.status === 'blocked') {
+                  <div class="blocked-info">
+                    <p class="blocked-message">{{ file.dependencyMessage || 'Dependencies required' }}</p>
+                    <p class="blocked-subtitle">Upload required files first</p>
+                  </div>
+                } @else {
+                  <div class="pending-info">
+                    <p class="pending-message">Ready for upload</p>
+                    <p class="pending-subtitle">Click upload to get started</p>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+              <div class="action-buttons">
+                @if (file.status === 'processing') {
+                  <button 
+                    class="btn btn--danger"
+                    (click)="cancelTask(file.id)">
+                    <span class="icon">{{ getIconName('cancel') }}</span>
+                    Cancel Upload
+                  </button>
+                } @else {
+                  <button 
+                    class="btn btn--primary"
+                    (click)="openUploadModal(file.id)"
+                    [disabled]="!file.canUpload">
+                    <span class="icon">{{ getIconName('upload') }}</span>
+                    {{ file.status === 'error' ? 'Retry Upload' : 'Upload File' }}
+                  </button>
+                }
+
+                <button 
+                  class="btn btn--secondary"
+                  (click)="downloadDataFile(file.id)"
+                  [disabled]="file.status !== 'success'">
+                  <span class="icon">{{ getIconName('download') }}</span>
+                  Download Data
+                </button>
+
+                @if (file.status === 'error' && (file.taskId || file.hasValidationReport)) {
+                  <button 
+                    class="btn btn--warning"
+                    (click)="downloadValidationReport(file.id)">
+                    <span class="icon">{{ getIconName('report') }}</span>
+                    Validation Report
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Upload Modal -->
+@if (showUploadModal) {
+  <div class="modal-overlay" (click)="closeUploadModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="icon">{{ getIconName('cloud_upload') }}</span>
+          Upload {{ getSelectedFileDisplayName() }}
+        </h2>
+        <button class="modal-close" (click)="closeUploadModal()">
+          <span class="icon">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="upload-instructions">
+          <p>Please select a TSV (Tab-Separated Values) file to upload.</p>
+          <p class="file-requirements">
+            <strong>Requirements:</strong>
+            <br>• File format: .tsv or .txt
+            <br>• Maximum size: 50MB
+            <br>• Must contain proper headers
+          </p>
+        </div>
+
+        <div class="file-input-section">
+          <input 
+            type="file" 
+            id="fileInput"
+            accept=".tsv,.txt"
+            (change)="onFileSelected($event)"
+            class="file-input">
+          <label for="fileInput" class="file-input-label">
+            <span class="icon">{{ getIconName('file_download') }}</span>
+            <span class="file-input-text">
+              {{ selectedFile ? selectedFile.name : 'Choose file...' }}
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button 
+          class="btn btn--secondary"
+          (click)="closeUploadModal()">
+          Cancel
+        </button>
+        <button 
+          class="btn btn--primary"
+          (click)="uploadFile()"
+          [disabled]="!selectedFile">
+          <span class="icon">{{ getIconName('upload') }}</span>
+          Upload File
+        </button>
+      </div>
+    </div>
+  </div>
+}

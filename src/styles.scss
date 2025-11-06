@@ -1,1 +1,805 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles for ToyIRIS Angular Dashboard */
+@import 'styles/tokens';
+@import 'styles/theme';
+
+// ===== MATERIAL ICONS STYLING =====
+// Make all Material Icons monotone and match the UI theme
+.icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.25rem; // 20px
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  vertical-align: middle;
+  
+  // Monotone - inherit color from parent
+  color: currentColor;
+  
+  // Smooth transitions
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  
+  // Prevent icon from shrinking
+  flex-shrink: 0;
+  
+  // Anti-aliasing for better rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  // Size variants
+  &.icon--xs {
+    font-size: 0.875rem; // 14px
+  }
+  
+  &.icon--sm {
+    font-size: 1rem; // 16px
+  }
+  
+  &.icon--md {
+    font-size: 1.25rem; // 20px (default)
+  }
+  
+  &.icon--lg {
+    font-size: 1.5rem; // 24px
+  }
+  
+  &.icon--xl {
+    font-size: 2rem; // 32px
+  }
+  
+  &.icon--2xl {
+    font-size: 2.5rem; // 40px
+  }
+}
+
+// Icon in buttons inherits button color
+.btn .icon {
+  margin-right: 0.5rem;
+  color: currentColor;
+}
+
+// Icon in nav items inherits nav color
+.nav-link .icon,
+.sub-nav-link .icon {
+  color: currentColor;
+}
+
+// Icon in headers uses primary text color
+.page-title .icon,
+.section-title .icon {
+  color: var(--color-primary);
+  margin-right: 0.75rem;
+}
+
+// Icon in metric cards uses theme colors
+.metric-icon .icon {
+  color: var(--color-primary);
+  font-size: 2rem;
+}
+
+// Status icons inherit their status color
+.status-success .icon,
+.text-success .icon {
+  color: var(--color-success);
+}
+
+.status-error .icon,
+.text-error .icon {
+  color: var(--color-error);
+}
+
+.status-warning .icon,
+.text-warning .icon {
+  color: var(--color-warning);
+}
+
+.status-info .icon,
+.text-info .icon {
+  color: var(--color-info);
+}
+
+// Notification icons
+.notification-icon .icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+// Empty state icons
+.empty-state__icon .icon {
+  font-size: 4rem;
+  color: var(--color-text-tertiary);
+  opacity: 0.5;
+}
+
+// Close buttons
+.close-icon.icon,
+.modal-close .icon {
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+// Expand/collapse icons
+.expand-icon.icon {
+  color: currentColor;
+  font-size: 1rem;
+  transition: transform var(--transition-fast);
+}
+
+// Check icon in dropdowns
+.check-icon.icon {
+  color: var(--color-primary);
+  font-size: 1rem;
+  margin-left: auto;
+}
+
+// Button icons - ensure proper alignment
+.btn-icon .icon {
+  font-size: 1.25rem;
+  color: currentColor;
+}
+
+// Header icons
+.menu-button .icon,
+.notification-button .icon,
+.theme-toggle .icon {
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+// Active state for notification button
+.notification-button.active .icon {
+  color: var(--color-primary);
+}
+
+// NOOS card icons
+.noos-icon .icon {
+  color: var(--color-primary);
+  font-size: 2rem;
+}
+
+// Card type specific icon colors
+.card-core .noos-icon .icon {
+  color: #4F46E5; // Indigo
+}
+
+.card-bestseller .noos-icon .icon {
+  color: #10B981; // Green
+}
+
+.card-fashion .noos-icon .icon {
+  color: #F59E0B; // Amber
+}
+
+.card-liquidation .noos-icon .icon {
+  color: #EF4444; // Red
+}
+
+// Task status icons with colors
+.task-status .icon {
+  margin-right: 0.5rem;
+}
+
+.status-completed .icon,
+.status-success .icon {
+  color: var(--color-success);
+}
+
+.status-running .icon,
+.status-in_progress .icon {
+  color: var(--color-primary);
+}
+
+.status-failed .icon,
+.status-error .icon {
+  color: var(--color-error);
+}
+
+.status-cancelled .icon,
+.status-blocked .icon {
+  color: var(--color-text-tertiary);
+}
+
+// Health card icons
+.health-card .icon {
+  color: var(--color-primary);
+}
+
+// Chart badge icons
+.chart-badge .icon {
+  margin-right: 0.25rem;
+}
+
+// Section title icons get primary color
+.card-title .icon,
+.modal-title .icon {
+  color: var(--color-primary);
+}
+
+// Loading spinner icons
+.loading__spinner::before {
+  color: var(--color-primary);
+}
+
+// Ensure icons in links inherit the link color
+a .icon {
+  color: currentColor;
+}
+
+// ===== GLOBAL RESET & BASE STYLES =====
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-quaternary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ===== LAYOUT STRUCTURE =====
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// ===== HEADER =====
+.header {
+  height: $header-height;
+  background-color: var(--color-bg-primary);
+  border-bottom: $border-width-thin solid var(--color-border-primary);
+  box-shadow: $shadow-sm;
+  z-index: $z-index-sticky;
+  display: block;
+  align-items: center;
+  padding-right:$spacing-md;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+// ===== CONTENT CONTAINER (holds sidebar + main content) =====
+.content-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+// ===== SIDEBAR LAYOUT =====
+.sidebar-overlay {
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  width: 100%;
+  height: calc(100% - #{$header-height});
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: $z-index-modal-backdrop;
+  display: none;
+  
+  @media (max-width: $breakpoint-lg) {
+    display: block;
+  }
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: var(--color-bg-primary);
+  border-right: $border-width-thin solid var(--color-border-primary);
+  box-shadow: $shadow-md;
+  transition: all $transition-normal;
+  z-index: $z-index-sticky;
+  flex-shrink: 0;
+  height: 100%;
+  
+  &.sidebar-collapsed {
+    width: $sidebar-width-collapsed;
+  }
+  
+  // Mobile overlay mode
+  @media (max-width: $breakpoint-lg) {
+    position: fixed;
+    top: $header-height;
+    left: 0;
+    height: calc(100% - #{$header-height});
+    z-index: $z-index-modal;
+    transform: translateX(-100%);
+    transition: transform $transition-normal;
+    width: $sidebar-width;
+    
+    &.sidebar-open {
+      transform: translateX(0);
+    }
+  }
+  
+  // Desktop mode - always visible unless collapsed
+  @media (min-width: calc(#{$breakpoint-lg} + 1px)) {
+    position: relative;
+    transform: none;
+    
+    &.sidebar-collapsed {
+      width: $sidebar-width-collapsed;
+    }
+  }
+}
+
+// ===== MAIN CONTENT AREA =====
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-bg-quaternary);
+  transition: all $transition-normal;
+  min-width: 0; // Allow content to shrink
+}
+
+// ===== CONTENT WRAPPER =====
+.content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding-left: $spacing-xs;
+  padding-top: $spacing-md;
+}
+
+// ===== DASHBOARD GRID =====
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-md;
+  max-width: 1300px;
+  margin: 0 auto;
+  
+  &--spaced {
+    margin-top: $spacing-lg; // Add spacing between section title and grid
+  }
+}
+
+// ===== CARD SYSTEM =====
+.card {
+  background-color: var(--color-bg-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  border: $border-width-thin solid var(--color-border-primary);
+  transition: all $transition-normal;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+  }
+  
+  &--sm {
+    padding: $card-padding-sm;
+  }
+  
+  &--md {
+    padding: $card-padding-md;
+  }
+  
+  &--lg {
+    padding: $card-padding-lg;
+  }
+  
+  &--spaced {
+    margin-top: $spacing-2xl; // Add spacing between sections
+  }
+}
+
+// ===== BUTTON SYSTEM =====
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $transition-normal;
+  white-space: nowrap;
+  // Standardized padding for all buttons - consistent vertical and horizontal spacing
+  padding: $spacing-md $spacing-xl;
+  font-size: $font-size-base;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  &--sm {
+    height: $button-height-sm;
+    padding: $button-padding-sm;
+    font-size: $font-size-sm;
+  }
+  
+  &--md {
+    height: $button-height-md;
+    padding: $button-padding-md;
+    font-size: $font-size-base;
+  }
+  
+  &--lg {
+    height: $button-height-lg;
+    padding: $button-padding-lg;
+    font-size: $font-size-lg;
+  }
+  
+  &--primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-hover);
+    }
+    
+    &:active:not(:disabled) {
+      background-color: var(--color-primary-active);
+    }
+  }
+  
+  &--secondary {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border: $border-width-thin solid var(--color-border-primary);
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-bg-hover);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    
+    &:active:not(:disabled) {
+      background-color: var(--color-bg-active);
+    }
+  }
+  
+  &--ghost {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-bg-hover);
+      color: var(--color-text-primary);
+    }
+    
+    &:active:not(:disabled) {
+      background-color: var(--color-bg-active);
+    }
+  }
+  
+  &--danger {
+    background-color: var(--color-error);
+    color: var(--color-text-inverse);
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-error-dark);
+    }
+    
+    &:active:not(:disabled) {
+      background-color: var(--color-error-dark);
+      filter: brightness(0.9);
+    }
+  }
+  
+  &--warning {
+    background-color: var(--color-warning);
+    color: var(--color-text-inverse);
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-warning-dark);
+    }
+    
+    &:active:not(:disabled) {
+      background-color: var(--color-warning-dark);
+      filter: brightness(0.9);
+    }
+  }
+}
+
+// ===== INPUT SYSTEM =====
+.input {
+  width: 100%;
+  height: $input-height-md;
+  padding: $input-padding-md;
+  border: $border-width-thin solid var(--color-border-primary);
+  border-radius: $border-radius-md;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: all $transition-normal;
+  
+  &::placeholder {
+    color: var(--color-text-placeholder);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px var(--shadow-color-focus);
+  }
+  
+  &:disabled {
+    background-color: var(--color-bg-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    border-color: var(--color-border-tertiary);
+  }
+  
+  &--sm {
+    height: $input-height-sm;
+    padding: $input-padding-sm;
+    font-size: $font-size-sm;
+  }
+  
+  &--lg {
+    height: $input-height-lg;
+    padding: $input-padding-lg;
+    font-size: $font-size-lg;
+  }
+}
+
+// ===== FORM SYSTEM =====
+.form-group {
+  margin-bottom: $spacing-lg;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-primary);
+  font-size: $font-size-sm;
+}
+
+.form-hint {
+  margin-top: $spacing-xs;
+  font-size: $font-size-xs;
+  color: var(--color-text-secondary);
+}
+
+.form-error {
+  margin-top: $spacing-xs;
+  font-size: $font-size-xs;
+  color: var(--color-error);
+}
+
+// ===== NOTIFICATION SYSTEM =====
+.notifications {
+  position: fixed;
+  top: $spacing-lg;
+  right: $spacing-lg;
+  z-index: $z-index-popover;
+  max-width: 400px;
+}
+
+.notification {
+  background-color: var(--color-bg-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  border: $border-width-thin solid var(--color-border-primary);
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  transition: all $transition-normal;
+  
+  &--success {
+    border-left: 4px solid var(--color-success);
+    background-color: var(--color-success-bg);
+  }
+  
+  &--error {
+    border-left: 4px solid var(--color-error);
+    background-color: var(--color-error-bg);
+  }
+  
+  &--warning {
+    border-left: 4px solid var(--color-warning);
+    background-color: var(--color-warning-bg);
+  }
+  
+  &--info {
+    border-left: 4px solid var(--color-info);
+    background-color: var(--color-info-bg);
+  }
+}
+
+// ===== LOADING STATES =====
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-3xl;
+  color: var(--color-text-secondary);
+  
+  &__spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-border-primary);
+    border-top: 2px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: $spacing-md;
+  }
+  
+  &__text {
+    font-size: $font-size-sm;
+    color: var(--color-text-secondary);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ===== EMPTY STATES =====
+.empty-state {
+  text-align: center;
+  padding: $spacing-4xl;
+  color: var(--color-text-secondary);
+  
+  &__icon {
+    font-size: 3rem;
+    margin-bottom: $spacing-lg;
+    opacity: 0.5;
+    color: var(--color-text-tertiary);
+  }
+  
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-primary);
+    margin-bottom: $spacing-sm;
+  }
+  
+  &__description {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-xl;
+    color: var(--color-text-secondary);
+  }
+  
+  &--spaced {
+    margin-top: $spacing-2xl; // Add spacing between section title and empty state
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+@media (max-width: $breakpoint-lg) {
+  .sidebar {
+    width: $sidebar-width-collapsed;
+    
+    &.expanded {
+      width: $sidebar-width;
+    }
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+  
+  .content-wrapper {
+    padding: $spacing-md;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: $border-width-thin solid $color-border-primary;
+  }
+  
+  .header {
+    padding: 0 $spacing-lg;
+  }
+  
+  .content-wrapper {
+    padding: $spacing-sm;
+  }
+  
+  .dashboard-grid {
+    gap: $spacing-sm;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .header {
+    padding: 0 $spacing-md;
+  }
+  
+  .content-wrapper {
+    padding: $spacing-xs;
+  }
+  
+  .card {
+    &--sm, &--md, &--lg {
+      padding: $spacing-md;
+    }
+  }
+}
+
+// ===== TYPOGRAPHY THEME SUPPORT =====
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+}
+
+p {
+  color: var(--color-text-secondary);
+}
+
+// ===== NAVIGATION THEME SUPPORT =====
+.nav-link {
+  color: var(--color-text-primary);
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+  
+  &.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+  }
+}
+
+.sub-nav-link {
+  color: var(--color-text-secondary);
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+  
+  &.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+  }
+}
+
+// ===== NOTIFICATION BADGE =====
+.notification-badge {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+}
+
+// ===== SEARCH INPUT =====
+.search-input {
+  background-color: var(--color-bg-primary);
+  border-color: var(--color-border-primary);
+  color: var(--color-text-primary);
+  
+  &::placeholder {
+    color: var(--color-text-placeholder);
+  }
+}

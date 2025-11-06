@@ -1,0 +1,67 @@
+<div class="sidebar-container" [class.sidebar-collapsed]="isCollapsed">
+  <!-- Close button for mobile (only visible on mobile) -->
+  <button class="close-btn-mobile" (click)="onCloseClick()" aria-label="Close sidebar">
+    <span class="close-icon icon">close</span>
+  </button>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      @for (item of navigationItems; track item.label) {
+        <li class="nav-item">
+          <!-- Main navigation item -->
+          @if (item.children) {
+            <!-- Parent item with children - clicking toggles expansion -->
+            <a 
+              class="nav-link"
+              [class.has-children]="true"
+              (click)="toggleExpansion(item); $event.preventDefault()"
+              [title]="isCollapsed ? item.label : ''">
+              <span class="nav-icon icon">{{ getIconName(item.icon) }}</span>
+              <span class="nav-text" [class.hidden]="isCollapsed">{{ item.label }}</span>
+              
+              @if (!isCollapsed) {
+                <button 
+                  class="expand-btn"
+                  (click)="$event.stopPropagation()"
+                  [attr.aria-expanded]="isExpanded(item)">
+                  <span class="expand-icon icon">{{ isExpanded(item) ? 'expand_more' : 'chevron_right' }}</span>
+                </button>
+              }
+            </a>
+          } @else {
+            <!-- Regular navigation item without children -->
+            <a 
+              class="nav-link"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+              (click)="onNavClick()"
+              [title]="isCollapsed ? item.label : ''">
+              <span class="nav-icon icon">{{ getIconName(item.icon) }}</span>
+              <span class="nav-text" [class.hidden]="isCollapsed">{{ item.label }}</span>
+            </a>
+          }
+          
+
+          <!-- Sub-navigation items (hidden when collapsed) -->
+          @if (item.children && isExpanded(item) && !isCollapsed) {
+            <ul class="sub-nav">
+              @for (child of item.children; track child.label) {
+                <li class="sub-nav-item">
+                  <a 
+                    class="sub-nav-link"
+                    [routerLink]="child.route"
+                    routerLinkActive="active"
+                    (click)="onNavClick()">
+                    <span class="nav-icon">{{ getIconName(child.icon) }}</span>
+                    <span class="nav-text">{{ child.label }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+</div>

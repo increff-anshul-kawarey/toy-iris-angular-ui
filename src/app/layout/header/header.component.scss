@@ -1,0 +1,175 @@
+@import '../../../styles/tokens';
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex:1;
+  justify-content: flex-start;
+  // Debug: temporary background to see the container
+  // background-color: rgba(255, 0, 0, 0.1);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+}
+
+.header-spacer {
+  flex: 1; // Takes up all remaining space
+  min-width: 0; // Allow flex item to shrink below content size
+  // Debug: temporary background to see the spacer
+  // background-color: rgba(0, 255, 0, 0.1);
+  // height: 100%;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.menu-button {
+  display: flex; // Always visible
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-normal;
+  
+  .icon {
+    font-size: $font-size-lg;
+    font-weight: bold;
+    transition: transform $transition-fast;
+  }
+  
+  &:hover {
+    .icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.logo {
+  height: 32px;
+  width: auto;
+}
+
+.app-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-primary);
+  margin: 0;
+  font-family: $font-family-primary;
+}
+
+// Removed spacer and right-controls - now using header-left and header-right containers
+
+.notifications-section {
+  position: relative;
+  
+  .notification-button {
+    position: relative;
+    transition: all $transition-normal;
+    
+    &.active {
+      background-color: var(--color-bg-hover);
+    }
+    
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--color-error);
+      color: var(--color-text-inverse);
+      border-radius: $border-radius-full;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-bold;
+      min-width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 $spacing-xs;
+    }
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 350px;
+    max-height: 400px;
+    background-color: var(--color-bg-primary);
+    border: $border-width-thin solid var(--color-border-primary);
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-xl;
+    z-index: $z-index-modal;
+    margin-top: $spacing-sm;
+    overflow: hidden;
+    display: block;
+    
+    // Override notification panel styles for dropdown
+    app-notification-panel {
+      .notification-panel {
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        max-width: none !important;
+        width: 100% !important;
+        max-height: 400px !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        overflow-y: auto;
+      }
+      
+      .notification-header {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        border-bottom: $border-width-thin solid var(--color-border-primary);
+        background-color: transparent;
+      }
+    }
+    
+    @media (max-width: $breakpoint-sm) {
+      width: 300px;
+      right: -50px;
+    }
+  }
+}
+
+.theme-section {
+  .theme-toggle {
+    transition: all $transition-normal;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    .icon {
+      font-size: $font-size-lg;
+    }
+  }
+}
+
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 1.1rem;
+  }
+  
+  .logo {
+    height: 28px;
+  }
+}

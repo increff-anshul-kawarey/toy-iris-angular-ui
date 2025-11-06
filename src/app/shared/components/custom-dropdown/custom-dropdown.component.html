@@ -1,0 +1,39 @@
+<div class="custom-dropdown" [class.disabled]="disabled">
+  <div 
+    class="dropdown-trigger" 
+    [class.open]="isOpen"
+    (click)="toggleDropdown()">
+    <span class="dropdown-value">{{ displayValue }}</span>
+    <span class="dropdown-icon">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </span>
+  </div>
+  
+  @if (isOpen) {
+    <div class="dropdown-menu">
+      <div class="dropdown-options">
+        @for (option of options; track getOptionValue(option)) {
+          <div 
+            class="dropdown-option"
+            [class.selected]="getOptionValue(option) === selectedValue"
+            (click)="selectOption(option)">
+            {{ getOptionDisplay(option) }}
+            @if (getOptionValue(option) === selectedValue) {
+              <span class="check-icon icon">check</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+

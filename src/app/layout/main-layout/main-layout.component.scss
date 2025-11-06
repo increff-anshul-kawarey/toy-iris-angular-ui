@@ -1,0 +1,7 @@
+// Main layout styles are now handled by global styles.scss
+// This file can be used for component-specific overrides if needed
+
+.app-container {
+  // Ensure proper height inheritance
+  height: 100vh;
+}

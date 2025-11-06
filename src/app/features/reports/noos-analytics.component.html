@@ -1,0 +1,293 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <span class="icon">{{ getIconName('analytics') }}</span>
+          NOOS Analytics Report
+        </h1>
+        </div>
+      <div class="header-actions">
+        <div class="last-refresh">
+          <span>Last updated: {{ lastRefreshTime | date:'short' }}</span>
+        </div>
+        <button 
+          class="btn btn--secondary"
+          (click)="refreshData()"
+          [disabled]="isLoading">
+          Refresh
+        </button>
+        <button 
+          class="btn btn--primary"
+          (click)="downloadReport()"
+          [disabled]="isLoading || reportData.length === 0">
+          Download Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-content">
+    @if (isLoading) {
+      <div class="loading">
+        <div class="loading__spinner"></div>
+        <div class="loading__text">Loading NOOS analytics data...</div>
+      </div>
+    } @else if (reportData.length === 0) {
+      <div class="empty-state">
+        <div class="empty-state__icon">{{ getIconName('analytics') }}</div>
+        <h3 class="empty-state__title">No NOOS Analytics Data</h3>
+        <p class="empty-state__description">Run the NOOS algorithm to generate analytics data.</p>
+      </div>
+    } @else {
+        <!-- Summary Stats -->
+        <div class="summary-stats">
+            <div class="stat-card">
+              <div class="stat-label">Total Runs</div>
+              <div class="stat-value">{{ reportData.length }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Avg Core Styles</div>
+              <div class="stat-value">
+                {{ getAverageCoreStyles() }}
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Avg Bestseller Styles</div>
+              <div class="stat-value">
+                {{ getAverageBestsellerStyles() }}
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Avg Fashion Styles</div>
+              <div class="stat-value">
+                {{ getAverageFashionStyles() }}
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Avg Execution Time</div>
+              <div class="stat-value">
+                {{ getAverageExecutionTime() }}m
+              </div>
+            </div>
+          </div>
+
+         
+      <!-- Charts Section -->
+      <div class="card card--lg charts-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="icon">trending_up</span>
+            Classification Trends
+          </h2>
+        </div>
+        <p class="section-description">Track how Core, Bestseller, and Fashion classifications evolve across algorithm runs</p>
+
+        <div class="charts-grid">
+          <!-- Core Chart -->
+          <div class="card card--chart">
+            <div class="chart-header">
+              <h3 class="chart-title">Core Styles</h3>
+              <div class="chart-badge chart-badge--core">
+                @if (reportData.length > 0) {
+                  {{ reportData[0].coreStyles || 0 }} current
+                }
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas #coreChart></canvas>
+            </div>
+          </div>
+
+          <!-- Bestseller Chart -->
+          <div class="card card--chart">
+            <div class="chart-header">
+              <h3 class="chart-title">Bestseller Styles</h3>
+              <div class="chart-badge chart-badge--bestseller">
+                @if (reportData.length > 0) {
+                  {{ reportData[0].bestsellerStyles || 0 }} current
+                }
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas #bestsellerChart></canvas>
+            </div>
+          </div>
+
+          <!-- Fashion Chart -->
+          <div class="card card--chart">
+            <div class="chart-header">
+              <h3 class="chart-title">Fashion Styles</h3>
+              <div class="chart-badge chart-badge--fashion">
+                @if (reportData.length > 0) {
+                  {{ reportData[0].fashionStyles || 0 }} current
+                }
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas #fashionChart></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historical Runs List -->
+      <div class="card card--lg runs-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="icon">history</span>
+            Historical NOOS Runs
+          </h2>
+        </div>
+        <p class="section-description">Complete history of all NOOS algorithm executions with detailed metrics</p>
+
+        <div class="card--runs-table">
+          <!-- Table Header -->
+          <div class="runs-table-header">
+            <div class="run-col run-col--date">Execution Date</div>
+            <div class="run-col run-col--label">Run Label</div>
+            <div class="run-col run-col--status">Status</div>
+            <div class="run-col run-col--total">Total Styles</div>
+            <div class="run-col run-col--core">Core</div>
+            <div class="run-col run-col--bestseller">Bestseller</div>
+            <div class="run-col run-col--fashion">Fashion</div>
+            <div class="run-col run-col--time">Exec Time</div>
+            <div class="run-col run-col--actions">Actions</div>
+          </div>
+
+          <!-- Conditional rendering: Virtual Scroll for 10+ runs, Regular list for < 10 runs -->
+          @if (reportData.length >= 10) {
+            <!-- Virtual Scroll List for 10+ runs -->
+            <cdk-virtual-scroll-viewport 
+              itemSize="60" 
+              class="runs-viewport">
+              <div 
+                *cdkVirtualFor="let run of reportData; let i = index; trackBy: trackByIndex"
+                class="run-row">
+                <div class="run-col run-col--date">
+                  <div class="run-date">{{ formatDate(run.executionDate) }}</div>
+                  <div class="run-time">{{ formatDateTime(run.executionDate) }}</div>
+                </div>
+                <div class="run-col run-col--label">
+                  <span class="run-label">{{ run.algorithmLabel }}</span>
+                </div>
+                <div class="run-col run-col--status">
+                  <span class="status-badge status-badge--{{ getStatusColor(run.executionStatus) }}">
+                    {{ run.executionStatus }}
+                  </span>
+                </div>
+                <div class="run-col run-col--total">
+                  <span class="run-value">{{ (run.totalStylesProcessed || 0).toLocaleString() }}</span>
+                </div>
+                <div class="run-col run-col--core">
+                  <div class="metric-pill metric-pill--core">
+                    {{ (run.coreStyles || 0).toLocaleString() }}
+                  </div>
+                </div>
+                <div class="run-col run-col--bestseller">
+                  <div class="metric-pill metric-pill--bestseller">
+                    {{ (run.bestsellerStyles || 0).toLocaleString() }}
+                  </div>
+                </div>
+                <div class="run-col run-col--fashion">
+                  <div class="metric-pill metric-pill--fashion">
+                    {{ (run.fashionStyles || 0).toLocaleString() }}
+                  </div>
+                </div>
+                <div class="run-col run-col--time">
+                  <span class="run-time-value">
+                    {{ (run.executionTimeMinutes || 0).toFixed(1) }}m
+                  </span>
+                </div>
+                <div class="run-col run-col--actions">
+                  <div class="action-buttons">
+                    <button 
+                      class="btn-icon btn-icon--download"
+                      (click)="downloadRun(run, i)"
+                      [disabled]="isDownloading[i]"
+                      [title]="'Download run ' + run.algorithmLabel">
+                      <span class="icon">{{ isDownloading[i] ? 'hourglass_empty' : 'download' }}</span>
+                    </button>
+                    <button 
+                      class="btn-icon btn-icon--delete"
+                      (click)="deleteRun(run, i)"
+                      [disabled]="isDeleting[i]"
+                      [title]="'Delete run ' + run.algorithmLabel">
+                      <span class="icon">{{ isDeleting[i] ? 'hourglass_empty' : 'delete' }}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </cdk-virtual-scroll-viewport>
+          } @else {
+            <!-- Regular list for < 10 runs (grows with content) -->
+            <div class="runs-list">
+              @for (run of reportData; track run.id || $index; let i = $index) {
+                <div class="run-row">
+                  <div class="run-col run-col--date">
+                    <div class="run-date">{{ formatDate(run.executionDate) }}</div>
+                    <div class="run-time">{{ formatDateTime(run.executionDate) }}</div>
+                  </div>
+                  <div class="run-col run-col--label">
+                    <span class="run-label">{{ run.algorithmLabel }}</span>
+                  </div>
+                  <div class="run-col run-col--status">
+                    <span class="status-badge status-badge--{{ getStatusColor(run.executionStatus) }}">
+                      {{ run.executionStatus }}
+                    </span>
+                  </div>
+                  <div class="run-col run-col--total">
+                    <span class="run-value">{{ (run.totalStylesProcessed || 0).toLocaleString() }}</span>
+                  </div>
+                  <div class="run-col run-col--core">
+                    <div class="metric-pill metric-pill--core">
+                      {{ (run.coreStyles || 0).toLocaleString() }}
+                    </div>
+                  </div>
+                  <div class="run-col run-col--bestseller">
+                    <div class="metric-pill metric-pill--bestseller">
+                      {{ (run.bestsellerStyles || 0).toLocaleString() }}
+                    </div>
+                  </div>
+                  <div class="run-col run-col--fashion">
+                    <div class="metric-pill metric-pill--fashion">
+                      {{ (run.fashionStyles || 0).toLocaleString() }}
+                    </div>
+                  </div>
+                  <div class="run-col run-col--time">
+                    <span class="run-time-value">
+                      {{ (run.executionTimeMinutes || 0).toFixed(1) }}m
+                    </span>
+                  </div>
+                  <div class="run-col run-col--actions">
+                    <div class="action-buttons">
+                      <button 
+                        class="btn-icon btn-icon--download"
+                        (click)="downloadRun(run, i)"
+                        [disabled]="isDownloading[i]"
+                        [title]="'Download run ' + run.algorithmLabel">
+                        <span class="icon">{{ isDownloading[i] ? 'hourglass_empty' : 'download' }}</span>
+                      </button>
+                      <button 
+                        class="btn-icon btn-icon--delete"
+                        (click)="deleteRun(run, i)"
+                        [disabled]="isDeleting[i]"
+                        [title]="'Delete run ' + run.algorithmLabel">
+                        <span class="icon">{{ isDeleting[i] ? 'hourglass_empty' : 'delete' }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        
+      </div>
+    }
+  </div>
+</div>
+

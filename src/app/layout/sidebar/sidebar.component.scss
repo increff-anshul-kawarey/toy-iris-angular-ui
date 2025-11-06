@@ -1,0 +1,221 @@
+@import '../../../styles/tokens';
+
+.sidebar-container {
+  height: 100%;
+  background-color: var(--color-bg-primary);
+  border-right: $border-width-thin solid var(--color-border-primary);
+  box-shadow: $shadow-md;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  &.sidebar-collapsed {
+    .nav-text {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .expand-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .sub-nav {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+    }
+    
+    .nav-link {
+      justify-content: center;
+      padding: $spacing-md $spacing-md; // Reduce horizontal padding for collapsed state
+      margin: 0 $spacing-md; // Reduce margin for collapsed state
+      
+      .nav-icon {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// Mobile close button (only visible on mobile)
+.close-btn-mobile {
+  background: none;
+  border: none;
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: all $transition-normal;
+  display: none; // Hidden on desktop
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  z-index: 10;
+  
+  @media (max-width: $breakpoint-lg) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+  
+  .close-icon {
+    font-size: $font-size-xl;
+    font-weight: bold;
+    color: var(--color-text-primary);
+  }
+}
+
+.sidebar-nav {
+  padding: $spacing-xl 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-bottom: $spacing-sm;
+}
+
+.nav-link {
+  color: var(--color-text-primary);
+  border-radius: $border-radius-lg;
+  margin: 0 $spacing-lg;
+  padding: $spacing-lg $spacing-xl;
+  transition: all $transition-normal;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+  
+  &.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    box-shadow: $shadow-md;
+  }
+  
+  &.has-children {
+    cursor: pointer;
+    
+    &:hover {
+      background-color: var(--color-bg-hover);
+    }
+  }
+  
+  .nav-icon {
+    margin-right: $spacing-md;
+    font-size: $font-size-lg;
+    width: $font-size-lg;
+    height: $font-size-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: margin $transition-normal;
+  }
+  
+  .nav-text {
+    flex: 1;
+    transition: all $transition-normal;
+    white-space: nowrap;
+    overflow: hidden;
+    
+    &.hidden {
+      opacity: 0;
+      transform: translateX(-10px);
+      width: 0;
+    }
+  }
+}
+
+.sub-nav {
+  background-color: var(--color-bg-secondary);
+  border-left: 3px solid var(--color-border-primary);
+  margin-left: $spacing-xl;
+  border-radius: 0 $border-radius-lg $border-radius-lg 0;
+  margin-top: $spacing-xs;
+  list-style: none;
+  padding: $spacing-sm 0;
+  transition: all $transition-normal;
+  max-height: 500px; // Allow for smooth collapse
+  overflow: hidden;
+}
+
+.sub-nav-item {
+  margin: $spacing-xs 0;
+}
+
+.sub-nav-link {
+  color: var(--color-text-secondary);
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-sm;
+  transition: all $transition-normal;
+  border-radius: $border-radius-md;
+  margin: 0 $spacing-sm;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+  
+  &.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-left: 3px solid var(--color-primary);
+  }
+  
+  .nav-icon {
+    margin-right: $spacing-md;
+    font-size: $font-size-base;
+    width: $font-size-base;
+    height: $font-size-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-text {
+    flex: 1;
+  }
+}
+
+.expand-btn {
+  margin-left: auto;
+  color: inherit;
+  border-radius: $border-radius-md;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-xs;
+  transition: all $transition-normal;
+  flex-shrink: 0;
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+  
+  .expand-icon {
+    font-size: $font-size-sm;
+    transition: transform $transition-normal;
+  }
+}
+

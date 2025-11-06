@@ -1,0 +1,338 @@
+<div class="page-container">
+  <!-- Dashboard Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <span class="icon">{{ getIconName('home') }}</span>
+          Dashboard
+        </h1>
+      </div>
+      <div class="header-actions">
+        <div class="last-refresh">
+          <span>Last updated: {{ lastRefreshTime | date:'short' }}</span>
+        </div>
+        <button 
+          class="btn btn--secondary"
+          (click)="refreshNoosResults()"
+          [disabled]="isNoosLoading">
+          Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content with Tabs -->
+  <div class="page-content">
+    <div class="tab-navigation">
+      <button 
+        class="tab-button"
+        [class.active]="selectedTabIndex === 0"
+        (click)="onTabChange(0)">
+        Overview
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="selectedTabIndex === 1"
+        (click)="onTabChange(1)">
+        Tasks
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="selectedTabIndex === 2"
+        (click)="onTabChange(2)">
+        System Health
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <!-- Overview Tab -->
+      @if (selectedTabIndex === 0) {
+        <!-- Dashboard Metrics Cards -->
+        @if (isDashboardLoading) {
+          <div class="loading">
+            <div class="loading__spinner"></div>
+            <div class="loading__text">Loading dashboard metrics...</div>
+          </div>
+        } @else if (dashboardData) {
+          <div class="dashboard-grid">
+            <div class="card card--md metric-card">
+              <div class="metric-icon">
+                <span class="icon">{{ getIconName('storage') }}</span>
+              </div>
+              <div class="metric-content">
+                <div class="metric-value">{{ dashboardData.totalSalesRecords.toLocaleString() }}</div>
+                <div class="metric-label">Sales Records</div>
+                <div class="metric-subtitle">{{ dashboardData.salesDataStatus }}</div>
+              </div>
+            </div>
+
+            <div class="card card--md metric-card">
+              <div class="metric-icon">
+                <span class="icon">{{ getIconName('inventory') }}</span>
+              </div>
+              <div class="metric-content">
+                <div class="metric-value">{{ (dashboardData.totalSkus + dashboardData.totalStores + dashboardData.totalStyles).toLocaleString() }}</div>
+                <div class="metric-label">Master Records</div>
+                <div class="metric-subtitle">{{ dashboardData.masterDataStatus }}</div>
+              </div>
+            </div>
+
+            <div class="card card--md metric-card">
+              <div class="metric-icon">
+                <span class="icon">{{ getIconName('cloud_upload') }}</span>
+              </div>
+              <div class="metric-content">
+                <div class="metric-value">{{ dashboardData.recentUploads }}</div>
+                <div class="metric-label">Recent Uploads</div>
+                <div class="metric-subtitle">{{ dashboardData.uploadSuccessRate.toFixed(1) }}% success rate</div>
+              </div>
+            </div>
+
+            <div class="card card--md metric-card">
+              <div class="metric-icon">
+                <span class="icon">{{ getIconName('settings') }}</span>
+              </div>
+              <div class="metric-content">
+                <div class="metric-value">{{ dashboardData.activeTasks }}</div>
+                <div class="metric-label">Active Tasks</div>
+                <div class="metric-subtitle">{{ dashboardData.processingStatus }}</div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- NOOS Results Summary -->
+        <div class="card card--lg noos-results-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="icon">{{ getIconName('analytics') }}</span>
+              NOOS Classification Results
+            </h2>
+            <div class="section-actions">
+              <button 
+                class="btn btn--primary"
+                (click)="downloadNoosResults()"
+                [disabled]="isNoosLoading || noosResults.length === 0">
+                <span class="icon">{{ getIconName('download') }}</span>
+                Download Results
+              </button>
+            </div>
+          </div>
+
+          @if (isNoosLoading) {
+            <div class="loading">
+              <div class="loading__spinner"></div>
+              <div class="loading__text">Loading NOOS results...</div>
+            </div>
+          } @else if (noosResults.length === 0) {
+            <div class="empty-state">
+              <div class="empty-state__icon">{{ getIconName('analytics') }}</div>
+              <h3 class="empty-state__title">No NOOS Results Available</h3>
+              <p class="empty-state__description">Run the NOOS algorithm to see classification results.</p>
+              <button 
+                class="btn btn--primary"
+                routerLink="/algorithm-parameters">
+                <span class="icon">{{ getIconName('play_arrow') }}</span>
+                Configure & Run Algorithm
+              </button>
+            </div>
+          } @else {
+            <div class="dashboard-grid">
+              @for (result of noosResults; track result.type) {
+                <div class="card card--md noos-card card-{{ result.type.toLowerCase() }}">
+                  <div class="noos-icon">
+                    <span class="icon">{{ getIconName('category') }}</span>
+                  </div>
+                  <div class="noos-count">{{ result.count.toLocaleString() }}</div>
+                  <div class="noos-percentage">{{ result.percentage }}%</div>
+                  <div class="noos-type">{{ result.type }}</div>
+                  <div class="noos-description">{{ result.description }}</div>
+                  <div class="last-run">Last run: {{ result.lastRun }}</div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Tasks Tab -->
+      @if (selectedTabIndex === 1) {
+        @if (isTaskLoading) {
+          <div class="loading">
+            <div class="loading__spinner"></div>
+            <div class="loading__text">Loading task data...</div>
+          </div>
+        } @else {
+          <!-- Task Statistics -->
+          @if (taskStats) {
+            <div class="dashboard-grid dashboard-grid--spaced">
+              <div class="card card--md stat-card">
+                <div class="stat-value">{{ taskStats.total }}</div>
+                <div class="stat-label">Total Tasks</div>
+              </div>
+              <div class="card card--md stat-card">
+                <div class="stat-value">{{ taskStats.running }}</div>
+                <div class="stat-label">Running</div>
+              </div>
+              <div class="card card--md stat-card">
+                <div class="stat-value">{{ taskStats.completed }}</div>
+                <div class="stat-label">Completed</div>
+              </div>
+              <div class="card card--md stat-card">
+                <div class="stat-value">{{ taskStats.failed }}</div>
+                <div class="stat-label">Failed</div>
+              </div>
+            </div>
+          }
+
+          <!-- Recent Tasks -->
+          <div class="card card--lg card--spaced">
+            <h2 class="section-title">
+              <span class="icon">{{ getIconName('history') }}</span>
+              Recent Tasks
+            </h2>
+            @if (recentTasks.length === 0) {
+              <div class="empty-state empty-state--spaced">
+                <div class="empty-state__icon">{{ getIconName('assignment') }}</div>
+                <h3 class="empty-state__title">No Recent Tasks</h3>
+                <p class="empty-state__description">Tasks will appear here once algorithms are run.</p>
+              </div>
+            } @else {
+              <div class="tasks-list tasks-list--spaced">
+                @for (task of recentTasks; track task.id) {
+                  <div class="card card--sm task-card">
+                    <div class="task-header">
+                      <div class="task-info">
+                        <div class="task-type">{{ task.taskType }}</div>
+                        <div class="task-time">{{ task.startTime | date:'short' }}</div>
+                      </div>
+                      <div class="task-status status-{{ task.status.toLowerCase() }}">
+                        <span class="icon">{{ getTaskStatusIcon(task.status) }}</span>
+                        {{ task.status }}
+                      </div>
+                    </div>
+                    <div class="task-message">{{ task.message }}</div>
+                    @if (task.progress > 0) {
+                      <div class="task-progress">
+                        <div class="progress-bar">
+                          <div class="progress-fill" [style.width.%]="task.progress"></div>
+                        </div>
+                        <span class="progress-text">{{ task.progress }}%</span>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+      <!-- System Health Tab -->
+      @if (selectedTabIndex === 2) {
+        @if (isHealthLoading) {
+          <div class="loading">
+            <div class="loading__spinner"></div>
+            <div class="loading__text">Loading system health data...</div>
+          </div>
+        } @else if (systemHealth.length === 0) {
+          <div class="empty-state">
+            <div class="empty-state__icon">{{ getIconName('health_and_safety') }}</div>
+            <h3 class="empty-state__title">No System Health Data</h3>
+            <p class="empty-state__description">System health metrics will appear here once available.</p>
+          </div>
+        } @else {
+          <div class="card card--lg">
+            <h2 class="section-title">
+              <span class="icon">{{ getIconName('health_and_safety') }}</span>
+              System Health Metrics
+            </h2>
+            <div class="dashboard-grid dashboard-grid--spaced">
+              @for (health of systemHealth; track $index) {
+                <div 
+                  class="card card--md health-card"
+                  (click)="showHealthDetails(health)"
+                  role="button"
+                  tabindex="0"
+                  (keyup.enter)="showHealthDetails(health)">
+                  <div class="health-metric">
+                    <div class="health-value">{{ getHealthValue(health) }}</div>
+                    <div class="health-label">{{ getHealthLabel(health) }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Health Details Modal -->
+@if (showHealthModal && selectedHealthMetric) {
+  <div class="modal-overlay" (click)="closeHealthModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="icon">{{ getIconName('health_and_safety') }}</span>
+          {{ getHealthLabel(selectedHealthMetric) }} Details
+        </h2>
+        <button class="modal-close" (click)="closeHealthModal()" aria-label="Close">
+          <span class="icon">close</span>
+        </button>
+      </div>
+      
+      <div class="modal-content">
+        <div class="health-detail-grid">
+          <div class="detail-item">
+            <div class="detail-label">Total Tasks</div>
+            <div class="detail-value">{{ selectedHealthMetric.totalTasks || 0 }}</div>
+          </div>
+          
+          @if (selectedHealthMetric.taskType === 'SYSTEM_OVERVIEW') {
+            <div class="detail-item">
+              <div class="detail-label">Active Tasks</div>
+              <div class="detail-value">{{ selectedHealthMetric.successfulTasks || 0 }}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Failed Tasks</div>
+              <div class="detail-value">{{ selectedHealthMetric.failedTasks || 0 }}</div>
+            </div>
+          } @else {
+            <div class="detail-item">
+              <div class="detail-label">Successful Tasks</div>
+              <div class="detail-value">{{ selectedHealthMetric.successfulTasks || 0 }}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Failed Tasks</div>
+              <div class="detail-value">{{ selectedHealthMetric.failedTasks || 0 }}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Success Rate</div>
+              <div class="detail-value">{{ selectedHealthMetric.successRate?.toFixed(1) || 'N/A' }}%</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Average Execution Time</div>
+              <div class="detail-value">{{ getAverageTimeInSeconds(selectedHealthMetric.averageExecutionTime) }}</div>
+            </div>
+          }
+          
+          @if (selectedHealthMetric.lastExecutionTime) {
+            <div class="detail-item">
+              <div class="detail-label">Last Execution</div>
+              <div class="detail-value">{{ selectedHealthMetric.lastExecutionTime | date:'short' }}</div>
+            </div>
+          }
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn--primary" (click)="closeHealthModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+}

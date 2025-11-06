@@ -1,0 +1,40 @@
+<div class="notification-panel">
+  @if (notifications.length > 0) {
+    <div class="notification-header">
+      <div class="notification-actions">
+        <button class="btn btn--ghost " (click)="refreshNotifications()" title="Refresh notifications">
+          <span class="icon">refresh</span>
+        </button>
+        <button class="btn btn--ghost" (click)="clearAll()">
+          Read All
+        </button>
+      </div>
+    </div>
+    
+    <div class="notification-list">
+      @for (notification of notifications; track notification.id) {
+        <div class="notification notification--{{ notification.type }}" 
+             [class.notification--read]="notification.isRead">
+          <div class="notification-content">
+            <div class="notification-icon">
+              <span class="icon">{{ getNotificationIcon(notification.type) }}</span>
+            </div>
+            <div class="notification-text">
+              <div class="notification-title">{{ notification.title }}</div>
+              <div class="notification-message">{{ notification.message }}</div>
+              <div class="notification-time">
+                {{ notification.timestamp | date:'short' }}
+              </div>
+            </div>
+          </div>
+          <button 
+            class="notification-close"
+            (click)="removeNotification(notification.id)"
+            [attr.aria-label]="notification.id.startsWith('backend-') ? 'Mark as read' : 'Close notification'">
+            <span class="icon">{{ notification.id.startsWith('backend-') ? 'check' : 'close' }}</span>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

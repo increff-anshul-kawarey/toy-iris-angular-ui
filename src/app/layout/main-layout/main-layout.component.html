@@ -1,0 +1,34 @@
+<div class="app-container">
+  <!-- Header at the top -->
+  <header class="header">
+    <app-header 
+      [sidebarCollapsed]="sidebarCollapsed"
+      (toggleSidenav)="toggleSidebar()"></app-header>
+  </header>
+
+  <!-- Content area below header -->
+  <div class="content-container">
+    <!-- Sidebar Overlay (mobile only) -->
+    @if (sidebarOpen) {
+      <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+    }
+
+    <!-- Sidebar -->
+    <aside class="sidebar" 
+           [class.sidebar-open]="sidebarOpen" 
+           [class.sidebar-collapsed]="sidebarCollapsed">
+      <app-sidebar 
+        [isCollapsed]="sidebarCollapsed"
+        (sidebarClose)="closeSidebar()"
+        (sidebarToggle)="toggleSidebar()"></app-sidebar>
+    </aside>
+
+    <!-- Main content area -->
+    <main class="main-content">
+      <!-- Page content -->
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

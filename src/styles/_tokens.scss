@@ -1,0 +1,238 @@
+// Design Tokens for ToyIRIS Angular Dashboard
+// Modern, soft dashboard aesthetic inspired by fintech dashboards and Notion-style design
+
+// ===== COLORS =====
+// Neutral, desaturated color palette
+$color-primary: #4b7f5b;           // Muted green accent
+$color-primary-light: #7cb690;     // Lighter green
+$color-primary-dark: #3d6b4a;      // Darker green
+
+$color-secondary: #b8a082;         // Muted beige
+$color-secondary-light: #d4c4a8;   // Light beige
+$color-secondary-dark: #9a8568;    // Dark beige
+
+$color-accent: #8b9dc3;            // Soft blue-gray
+$color-accent-light: #a8b8d1;      // Light blue-gray
+$color-accent-dark: #6b7a9a;       // Dark blue-gray
+
+// Background colors
+$color-bg-primary: #ffffff;        // Pure white
+$color-bg-secondary: #f8f8f8;      // Off-white
+$color-bg-tertiary: #f0f0ed;       // Light beige
+$color-bg-quaternary: #f6f6f3;     // Very light beige
+
+// Text colors
+$color-text-primary: #1f1f1f;      // Dark gray (almost black)
+$color-text-secondary: #6b7280;    // Medium gray
+$color-text-tertiary: #9ca3af;     // Light gray
+$color-text-quaternary: #d1d5db;   // Very light gray
+
+// Border colors
+$color-border-primary: #e0e0e0;    // Light gray border
+$color-border-secondary: #d1d5db;  // Lighter gray border
+$color-border-tertiary: #f3f4f6;   // Very light border
+
+// Status colors (muted)
+$color-success: #4b7f5b;           // Muted green
+$color-warning: #b8a082;           // Muted beige
+$color-error: #dc2626;             // Muted red
+$color-info: #8b9dc3;              // Muted blue
+
+// ===== SPACING =====
+$spacing-xs: 0.25rem;    // 4px
+$spacing-sm: 0.5rem;     // 8px
+$spacing-md: 0.75rem;    // 12px
+$spacing-lg: 1rem;       // 16px
+$spacing-xl: 1.5rem;     // 24px
+$spacing-2xl: 2rem;      // 32px
+$spacing-3xl: 3rem;      // 48px
+$spacing-4xl: 4rem;      // 64px
+
+// Padding tokens
+$padding-xs: $spacing-xs;
+$padding-sm: $spacing-sm;
+$padding-md: $spacing-md;
+$padding-lg: $spacing-lg;
+$padding-xl: $spacing-xl;
+$padding-2xl: $spacing-2xl;
+
+// Margin tokens
+$margin-xs: $spacing-xs;
+$margin-sm: $spacing-sm;
+$margin-md: $spacing-md;
+$margin-lg: $spacing-lg;
+$margin-xl: $spacing-xl;
+$margin-2xl: $spacing-2xl;
+
+// ===== TYPOGRAPHY =====
+// Font families
+$font-family-primary: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+// Font weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Font sizes
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-lg: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;    // 20px
+$font-size-2xl: 1.5rem;    // 24px
+$font-size-3xl: 1.875rem;  // 30px
+$font-size-4xl: 2.25rem;   // 36px
+
+// Line heights
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// ===== BORDERS =====
+// Border radius
+$border-radius-sm: 6px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-2xl: 20px;
+$border-radius-full: 9999px;
+
+// Border widths
+$border-width-thin: 1px;
+$border-width-medium: 2px;
+$border-width-thick: 3px;
+
+// ===== SHADOWS =====
+// Soft, subtle shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+$shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
+$shadow-2xl: 0 16px 48px rgba(0, 0, 0, 0.2);
+
+// Hover shadows
+$shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+// ===== TRANSITIONS =====
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// ===== BREAKPOINTS =====
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// ===== Z-INDEX =====
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// ===== COMPONENT SPECIFIC TOKENS =====
+// Button tokens
+$button-height-sm: 4rem;      // 32px
+$button-height-md: 5rem;    // 40px
+$button-height-lg: 6rem;      // 48px
+
+$button-padding-sm: $spacing-lg $spacing-xl;
+$button-padding-md: $spacing-xl $spacing-2xl;
+$button-padding-lg: $spacing-2xl $spacing-3xl;
+
+// Input tokens
+$input-height-sm: 2rem;       // 32px
+$input-height-md: 2.5rem;     // 40px
+$input-height-lg: 3rem;       // 48px
+
+$input-padding-sm: $spacing-sm $spacing-md;
+$input-padding-md: $spacing-md $spacing-lg;
+$input-padding-lg: $spacing-lg $spacing-xl;
+
+// Card tokens
+$card-padding-sm: $spacing-lg;
+$card-padding-md: $spacing-xl;
+$card-padding-lg: $spacing-2xl;
+
+// Sidebar tokens
+$sidebar-width: 16rem;        // 256px
+$sidebar-width-collapsed: 4rem; // 64px
+
+// Header tokens
+$header-height: 4rem;         // 64px
+
+// ===== UTILITY CLASSES =====
+// These can be used throughout the application for consistent spacing and styling
+
+// Spacing utilities
+.p-xs { padding: $padding-xs; }
+.p-sm { padding: $padding-sm; }
+.p-md { padding: $padding-md; }
+.p-lg { padding: $padding-lg; }
+.p-xl { padding: $padding-xl; }
+.p-2xl { padding: $padding-2xl; }
+
+.m-xs { margin: $margin-xs; }
+.m-sm { margin: $margin-sm; }
+.m-md { margin: $margin-md; }
+.m-lg { margin: $margin-lg; }
+.m-xl { margin: $margin-xl; }
+.m-2xl { margin: $margin-2xl; }
+
+// Text utilities
+.text-primary { color: $color-text-primary; }
+.text-secondary { color: $color-text-secondary; }
+.text-tertiary { color: $color-text-tertiary; }
+.text-quaternary { color: $color-text-quaternary; }
+
+.text-xs { font-size: $font-size-xs; }
+.text-sm { font-size: $font-size-sm; }
+.text-base { font-size: $font-size-base; }
+.text-lg { font-size: $font-size-lg; }
+.text-xl { font-size: $font-size-xl; }
+.text-2xl { font-size: $font-size-2xl; }
+.text-3xl { font-size: $font-size-3xl; }
+.text-4xl { font-size: $font-size-4xl; }
+
+.font-light { font-weight: $font-weight-light; }
+.font-normal { font-weight: $font-weight-normal; }
+.font-medium { font-weight: $font-weight-medium; }
+.font-semibold { font-weight: $font-weight-semibold; }
+.font-bold { font-weight: $font-weight-bold; }
+
+// Background utilities
+.bg-primary { background-color: $color-bg-primary; }
+.bg-secondary { background-color: $color-bg-secondary; }
+.bg-tertiary { background-color: $color-bg-tertiary; }
+.bg-quaternary { background-color: $color-bg-quaternary; }
+
+// Border utilities
+.border { border: $border-width-thin solid $color-border-primary; }
+.border-secondary { border: $border-width-thin solid $color-border-secondary; }
+.border-tertiary { border: $border-width-thin solid $color-border-tertiary; }
+
+.rounded-sm { border-radius: $border-radius-sm; }
+.rounded-md { border-radius: $border-radius-md; }
+.rounded-lg { border-radius: $border-radius-lg; }
+.rounded-xl { border-radius: $border-radius-xl; }
+.rounded-2xl { border-radius: $border-radius-2xl; }
+.rounded-full { border-radius: $border-radius-full; }
+
+// Shadow utilities
+.shadow-sm { box-shadow: $shadow-sm; }
+.shadow-md { box-shadow: $shadow-md; }
+.shadow-lg { box-shadow: $shadow-lg; }
+.shadow-xl { box-shadow: $shadow-xl; }
+.shadow-2xl { box-shadow: $shadow-2xl; }
+
+// Transition utilities
+.transition-fast { transition: all $transition-fast; }
+.transition-normal { transition: all $transition-normal; }
+.transition-slow { transition: all $transition-slow; }

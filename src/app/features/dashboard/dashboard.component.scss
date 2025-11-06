@@ -1,0 +1,459 @@
+@import '../../../styles/tokens';
+@import '../../../styles/page-layout';
+
+// Tab navigation
+.tab-navigation {
+  display: flex;
+  background-color: var(--color-bg-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  border: $border-width-thin solid var(--color-border-primary);
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 1;
+  padding: $spacing-md $spacing-lg;
+  border: none;
+  background: none;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all $transition-normal;
+  border-bottom: 3px solid transparent;
+  
+  &:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+  
+  &.active {
+    color: var(--color-primary);
+    background-color: var(--color-bg-hover);
+    border-bottom-color: var(--color-primary);
+  }
+}
+
+.tab-content {
+  min-height: 500px;
+}
+
+// Metric cards
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  
+  .metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $border-radius-md;
+    background-color: var(--color-bg-tertiary);
+    
+    .icon {
+      font-size: $font-size-2xl;
+      color: var(--color-primary);
+    }
+  }
+  
+  .metric-content {
+    flex: 1;
+  }
+  
+  .metric-value {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--color-text-primary);
+    margin-bottom: $spacing-xs;
+    font-family: $font-family-primary;
+  }
+  
+  .metric-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-secondary);
+    margin-bottom: $spacing-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .metric-subtitle {
+    font-size: $font-size-xs;
+    color: var(--color-text-tertiary);
+    line-height: $line-height-tight;
+  }
+}
+
+// ===== NOOS RESULTS SECTION =====
+.noos-results-section {
+  margin-top: $spacing-lg;
+}
+
+// NOOS cards
+.noos-card {
+  text-align: center;
+  
+  .noos-icon {
+    margin-bottom: $spacing-md;
+    
+    .icon {
+      font-size: 3rem;
+      color: var(--color-text-secondary);
+      opacity: 0.8;
+    }
+  }
+  
+  .noos-count {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: var(--color-text-primary);
+    margin-bottom: $spacing-xs;
+    font-family: $font-family-primary;
+  }
+  
+  .noos-percentage {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: var(--color-primary);
+    margin-bottom: $spacing-sm;
+  }
+  
+  .noos-type {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-secondary);
+    margin-bottom: $spacing-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .noos-description {
+    font-size: $font-size-xs;
+    color: var(--color-text-tertiary);
+    line-height: $line-height-tight;
+    margin-bottom: $spacing-md;
+  }
+  
+  .last-run {
+    font-size: $font-size-xs;
+    color: var(--color-text-tertiary);
+    padding-top: $spacing-md;
+    border-top: $border-width-thin solid var(--color-border-primary);
+  }
+}
+
+// NOOS card color variations - muted palette
+.card-core {
+  .noos-icon .icon { color: var(--color-primary); }
+  .noos-count { color: var(--color-primary-dark); }
+}
+
+.card-bestseller {
+  .noos-icon .icon { color: var(--color-primary-light); }
+  .noos-count { color: var(--color-primary); }
+}
+
+.card-liquidation {
+  .noos-icon .icon { color: var(--color-secondary); }
+  .noos-count { color: var(--color-secondary-dark); }
+}
+
+.card-other {
+  .noos-icon .icon { color: var(--color-accent); }
+  .noos-count { color: var(--color-accent-dark); }
+}
+
+// Task monitoring styles
+.stat-card {
+  text-align: center;
+  padding: $spacing-md; // Match overview card padding
+  
+  .stat-value {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: var(--color-text-primary);
+    margin-bottom: $spacing-sm;
+    font-family: $font-family-primary;
+  }
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  
+  &--spaced {
+    margin-top: $spacing-lg; // Add spacing between section title and tasks list
+  }
+}
+
+.task-card {
+  padding: $spacing-md; // Match overview card padding
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+  }
+  
+  .task-info {
+    .task-type {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: var(--color-text-primary);
+      margin-bottom: $spacing-xs;
+    }
+    
+    .task-time {
+      font-size: $font-size-xs;
+      color: var(--color-text-tertiary);
+    }
+  }
+  
+  .task-status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    
+    &.status-completed {
+      background-color: var(--color-success-bg);
+      color: var(--color-success);
+    }
+    
+    &.status-running {
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+    }
+    
+    &.status-failed {
+      background-color: var(--color-error-bg);
+      color: var(--color-error);
+    }
+    
+    &.status-cancelled {
+      background-color: var(--color-warning-bg);
+      color: var(--color-warning);
+    }
+  }
+  
+  .task-message {
+    font-size: $font-size-sm;
+    color: var(--color-text-secondary);
+    margin-bottom: $spacing-md;
+    line-height: $line-height-normal;
+  }
+  
+  .task-progress {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background-color: var(--color-bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width $transition-normal;
+  }
+  
+  .progress-text {
+    font-size: $font-size-xs;
+    color: var(--color-text-secondary);
+    font-weight: $font-weight-semibold;
+  }
+}
+
+// System health styles
+.health-card {
+  text-align: center;
+  padding: $spacing-md; // Match overview card padding
+  cursor: pointer;
+  transition: all $transition-normal;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+  
+  &:active {
+    transform: translateY(-2px);
+  }
+  
+  .health-metric {
+    .health-value {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: var(--color-text-primary);
+      margin-bottom: $spacing-sm;
+      font-family: $font-family-primary;
+    }
+    
+    .health-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Modal styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $spacing-lg;
+}
+
+.modal-card {
+  background-color: var(--color-bg-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-xl;
+  border-bottom: $border-width-thin solid var(--color-border-primary);
+  
+  .modal-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-primary);
+    margin: 0;
+    font-family: $font-family-primary;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    
+    .icon {
+      color: var(--color-primary);
+    }
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-sm;
+    transition: all $transition-fast;
+    
+    &:hover {
+      background-color: var(--color-bg-hover);
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+.modal-content {
+  padding: $spacing-xl;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  padding: $spacing-lg $spacing-xl;
+  border-top: $border-width-thin solid var(--color-border-primary);
+}
+
+.health-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-lg;
+  
+  @media (max-width: $breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+  
+  .detail-item {
+    padding: $spacing-md;
+    background-color: var(--color-bg-secondary);
+    border-radius: $border-radius-md;
+    border-left: 3px solid var(--color-primary);
+    
+    .detail-label {
+      font-size: $font-size-xs;
+      color: var(--color-text-tertiary);
+      font-weight: $font-weight-semibold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: $spacing-xs;
+    }
+    
+    .detail-value {
+      font-size: $font-size-xl;
+      color: var(--color-text-primary);
+      font-weight: $font-weight-bold;
+      font-family: $font-family-primary;
+    }
+  }
+}
+
+// Responsive adjustments - component-specific overrides
+@media (max-width: $breakpoint-lg) {
+  .tab-navigation {
+    flex-direction: column;
+    
+    .tab-button {
+      border-bottom: $border-width-thin solid var(--color-border-primary);
+      border-right: none;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &.active {
+        border-bottom-color: var(--color-primary);
+      }
+    }
+  }
+}
+

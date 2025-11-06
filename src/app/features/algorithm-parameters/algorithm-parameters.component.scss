@@ -1,0 +1,225 @@
+@import '../../../styles/tokens';
+@import '../../../styles/page-layout';
+
+.parameters-form {
+  padding-bottom: $spacing-lg;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-md;
+  align-items: start;
+}
+
+.parameters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  margin: $spacing-lg 0;
+}
+
+.parameters-section {
+  margin: 0;
+  padding: $spacing-md;
+  background-color: var(--color-bg-secondary);
+  border-radius: $border-radius-lg;
+  border: $border-width-thin solid var(--color-border-primary);
+}
+
+.card-header {
+  margin-bottom: $spacing-sm;
+  
+  .card-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-primary);
+    margin: 0 0 $spacing-sm 0;
+    font-family: $font-family-primary;
+  }
+  
+  .card-subtitle {
+    color: var(--color-text-secondary);
+    font-family: $font-family-primary;
+    margin: 0;
+  }
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  margin: 0;
+}
+
+// Form enhancements
+.input-with-suffix {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  .input {
+    padding-right: 3rem;
+  }
+  
+  .input-suffix {
+    position: absolute;
+    right: $spacing-md;
+    color: var(--color-text-tertiary);
+    font-size: $font-size-sm;
+    pointer-events: none;
+  }
+}
+
+// Select field specific styles
+select.input {
+  width: 100%;
+  height: $input-height-md;
+  padding: $input-padding-md;
+  border: $border-width-thin solid var(--color-border-primary);
+  border-radius: $border-radius-md;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: all $transition-normal;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right $spacing-md center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px var(--shadow-color-focus);
+  }
+  
+  &:disabled {
+    background-color: var(--color-bg-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    border-color: var(--color-border-tertiary);
+  }
+}
+
+.form-hint {
+  font-size: $font-size-xs;
+  color: var(--color-text-tertiary);
+  margin-top: $spacing-xs;
+  line-height: $line-height-tight;
+}
+
+// Responsive design - component-specific overrides
+@media (max-width: $breakpoint-lg) {
+  .parameters-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+    
+    .btn {
+      width: 50%;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .parameters-section {
+    padding: $spacing-lg;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .parameters-section {
+    padding: $spacing-md;
+  }
+  
+  .card-actions {
+    padding: $spacing-md;
+  }
+}
+
+// Modal styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $spacing-lg;
+}
+
+.modal-card {
+  background-color: var(--color-bg-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid var(--color-border-primary);
+  
+  .modal-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-primary);
+    margin: 0;
+    font-family: $font-family-primary;
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-sm;
+    transition: all $transition-fast;
+    
+    &:hover {
+      background-color: var(--color-bg-hover);
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+.modal-content {
+  padding: $spacing-lg;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  padding: $spacing-lg;
+  border-top: $border-width-thin solid var(--color-border-primary);
+}

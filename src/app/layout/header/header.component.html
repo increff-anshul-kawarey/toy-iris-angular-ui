@@ -1,0 +1,56 @@
+<div class="header-content">
+  <!-- Left side container -->
+  <div class="header-left">
+    <!-- Sidebar toggle button (visible on all screens) -->
+    <button 
+      class="btn btn--ghost menu-button"
+      (click)="onToggleSidenav()"
+      [attr.aria-label]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      [title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+      <span class="icon">menu</span>
+    </button>
+
+    <!-- Logo and title -->
+    <div class="brand-section">
+      <img src="logo.png" alt="ToyIRIS Logo" class="logo" />
+      <span class="app-title">ToyIRIS</span>
+    </div>
+  </div>
+
+  <!-- Dynamic spacer -->
+  <div class="header-spacer"></div>
+
+  <!-- Right side container -->
+  <div class="header-right">
+    <!-- Notifications -->
+    <div class="notifications-section">
+      <button 
+        class="btn btn--ghost notification-button" 
+        (click)="toggleNotifications()"
+        [class.active]="showNotifications"
+        aria-label="Notifications">
+        <span class="icon">notifications</span>
+        @if (notificationCount > 0) {
+          <span class="notification-badge">{{ notificationCount }}</span>
+        }
+      </button>
+      
+      @if (showNotifications) {
+        <div class="notification-dropdown">
+          <app-notification-panel></app-notification-panel>
+        </div>
+      }
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-section">
+      <button 
+        class="btn btn--ghost theme-toggle" 
+        (click)="toggleTheme()"
+        [attr.aria-label]="themeService.getThemeLabel()"
+        [title]="themeService.getThemeLabel()">
+        <span class="icon">{{ themeService.getThemeIcon() }}</span>
+      </button>
+    </div>
+  </div>
+</div>

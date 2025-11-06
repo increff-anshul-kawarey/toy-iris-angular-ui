@@ -1,0 +1,244 @@
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <span class="icon">{{ getIconName('settings') }}</span>
+          Algorithm Parameters
+        </h1>
+      </div>
+      <div class="header-actions">
+        <button 
+          class="btn btn--secondary"
+          (click)="resetToDefaults()"
+          [disabled]="isSaving || isRunning">
+          <span class="icon">{{ getIconName('restore') }}</span>
+          Reset to Defaults
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameters Form -->
+  <div class="page-content">
+    <div class="card card--lg">
+
+      <div class="card-content">
+        <form [formGroup]="parametersForm" class="parameters-form">
+          <!-- Parameter Set Selection -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Parameter Set</label>
+              <app-custom-dropdown
+                [options]="availableParameterSets"
+                [(ngModel)]="selectedParameterSet"
+                [ngModelOptions]="{standalone: true}"
+                [disabled]="isSaving || isRunning"
+                (valueChange)="onParameterSetChange($event)">
+              </app-custom-dropdown>
+            </div>
+          </div>
+
+          <!-- Core Algorithm Parameters Wrapper -->
+          <div class="parameters-grid">
+          <div class="parameters-section">
+            <h3 class="section-title">
+              <span class="icon">{{ getIconName('tune') }}</span>
+              Classification Parameters
+            </h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Liquidation Threshold</label>
+                <div class="input-with-suffix">
+                  <input 
+                    type="text" 
+                    class="input"
+                    formControlName="liquidationThreshold" 
+                    placeholder="25">
+                  <span class="input-suffix">%</span>
+                </div>
+                @if (getFieldError('liquidationThreshold')) {
+                  <div class="form-error">{{ getFieldError('liquidationThreshold') }}</div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Bestseller Multiplier</label>
+                <input 
+                  type="text" 
+                  class="input"
+                  formControlName="bestsellerMultiplier" 
+                  placeholder="1.20">
+                @if (getFieldError('bestsellerMultiplier')) {
+                  <div class="form-error">{{ getFieldError('bestsellerMultiplier') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Minimum Volume Threshold</label>
+                <div class="input-with-suffix">
+                  <input 
+                    type="text" 
+                    class="input"
+                    formControlName="minVolumeThreshold" 
+                    placeholder="25">
+                  <span class="input-suffix">units</span>
+                </div>
+                @if (getFieldError('minVolumeThreshold')) {
+                  <div class="form-error">{{ getFieldError('minVolumeThreshold') }}</div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Consistency Threshold</label>
+                <div class="input-with-suffix">
+                  <input 
+                    type="text" 
+                    class="input"
+                    formControlName="consistencyThreshold" 
+                    placeholder="75">
+                  <span class="input-suffix">%</span>
+                </div>
+                @if (getFieldError('consistencyThreshold')) {
+                  <div class="form-error">{{ getFieldError('consistencyThreshold') }}</div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration Parameters -->
+          <div class="parameters-section">
+            <h3 class="section-title">
+              <span class="icon">schedule</span>
+              Analysis Duration
+            </h3>
+
+            <!-- Analysis Date Range -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Analysis Start Date</label>
+                <input 
+                  type="date"
+                  class="input"
+                  formControlName="analysisStartDate">
+                @if (getFieldError('analysisStartDate')) {
+                  <div class="form-error">{{ getFieldError('analysisStartDate') }}</div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Analysis End Date</label>
+                <input 
+                  type="date"
+                  class="input"
+                  formControlName="analysisEndDate">
+                @if (getFieldError('analysisEndDate')) {
+                  <div class="form-error">{{ getFieldError('analysisEndDate') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Core Duration</label>
+                <div class="input-with-suffix">
+                  <input 
+                    type="text" 
+                    class="input"
+                    formControlName="coreDurationMonths" 
+                    placeholder="6">
+                  <span class="input-suffix">months</span>
+                </div>
+                @if (getFieldError('coreDurationMonths')) {
+                  <div class="form-error">{{ getFieldError('coreDurationMonths') }}</div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Bestseller Duration</label>
+                <div class="input-with-suffix">
+                  <input 
+                    type="text" 
+                    class="input"
+                    formControlName="bestsellerDurationDays" 
+                    placeholder="90">
+                  <span class="input-suffix">days</span>
+                </div>
+                @if (getFieldError('bestsellerDurationDays')) {
+                  <div class="form-error">{{ getFieldError('bestsellerDurationDays') }}</div>
+                }
+              </div>
+            </div>
+          </div>
+          </div><!-- Close parameters-grid -->
+        </form>
+      </div>
+
+      <div class="card-actions">
+        <button 
+          class="btn btn--secondary"
+          (click)="openSaveAsModal()"
+          [disabled]="isSaving || isRunning || parametersForm.invalid">
+          <span class="icon">{{ getIconName('save') }}</span>
+          Save as New Config
+        </button>
+
+        <button 
+          class="btn btn--primary"
+          (click)="runAlgorithm()"
+          [disabled]="isSaving || isRunning || parametersForm.invalid">
+          @if (isRunning) {
+            <div class="loading__spinner"></div>
+          } @else {
+            <span class="icon">{{ getIconName('play_arrow') }}</span>
+          }
+          Run NOOS Algorithm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Save As New Config Modal -->
+@if (showSaveAsModal) {
+  <div class="modal-overlay" (click)="closeSaveAsModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Save as New Configuration</h2>
+        <button class="modal-close" (click)="closeSaveAsModal()" aria-label="Close"><span class="icon">close</span></button>
+      </div>
+      
+      <div class="modal-content">
+        <div class="form-group">
+          <label class="form-label">Configuration Name</label>
+          <input
+            type="text"
+            class="input"
+            [(ngModel)]="newParameterSetName"
+            placeholder="e.g., Q1_2024_Analysis"
+            (keyup.enter)="confirmSaveAsNew()"
+            autofocus>
+          <div class="form-hint">Enter a unique name for this parameter set</div>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn--secondary" (click)="closeSaveAsModal()" [disabled]="isSaving">
+          Cancel
+        </button>
+        <button class="btn btn--primary" (click)="confirmSaveAsNew()" [disabled]="isSaving || !newParameterSetName.trim()">
+          @if (isSaving) {
+            <div class="loading__spinner"></div>
+          } @else {
+            <span class="icon">{{ getIconName('save') }}</span>
+          }
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+}
